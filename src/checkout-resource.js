@@ -1,28 +1,29 @@
-import Resource from './resource';
-import defaultResolver from './default-resolver';
-import handleCheckoutMutation from './handle-checkout-mutation';
+import defaultResolver from "./default-resolver";
+import handleCheckoutMutation from "./handle-checkout-mutation";
+import Resource from "./resource";
 
 // GraphQL
-import checkoutNodeQuery from './graphql/checkoutNodeQuery.graphql';
-import checkoutCreateMutation from './graphql/checkoutCreateMutation.graphql';
-import checkoutLineItemsAddMutation from './graphql/checkoutLineItemsAddMutation.graphql';
-import checkoutLineItemsRemoveMutation from './graphql/checkoutLineItemsRemoveMutation.graphql';
-import checkoutLineItemsReplaceMutation from './graphql/checkoutLineItemsReplaceMutation.graphql';
-import checkoutLineItemsUpdateMutation from './graphql/checkoutLineItemsUpdateMutation.graphql';
-import checkoutAttributesUpdateV2Mutation from './graphql/checkoutAttributesUpdateV2Mutation.graphql';
-import checkoutDiscountCodeApplyV2Mutation from './graphql/checkoutDiscountCodeApplyV2Mutation.graphql';
-import checkoutDiscountCodeRemoveMutation from './graphql/checkoutDiscountCodeRemoveMutation.graphql';
-import checkoutGiftCardsAppendMutation from './graphql/checkoutGiftCardsAppendMutation.graphql';
-import checkoutGiftCardRemoveV2Mutation from './graphql/checkoutGiftCardRemoveV2Mutation.graphql';
-import checkoutEmailUpdateV2Mutation from './graphql/checkoutEmailUpdateV2Mutation.graphql';
-import checkoutShippingAddressUpdateV2Mutation from './graphql/checkoutShippingAddressUpdateV2Mutation.graphql';
+import checkoutAttributesUpdateV2Mutation from "./graphql/checkoutAttributesUpdateV2Mutation.graphql";
+import checkoutCreateMutation from "./graphql/checkoutCreateMutation.graphql";
+import checkoutDiscountCodeApplyV2Mutation from "./graphql/checkoutDiscountCodeApplyV2Mutation.graphql";
+import checkoutDiscountCodeRemoveMutation from "./graphql/checkoutDiscountCodeRemoveMutation.graphql";
+import checkoutEmailUpdateV2Mutation from "./graphql/checkoutEmailUpdateV2Mutation.graphql";
+import checkoutGiftCardRemoveV2Mutation from "./graphql/checkoutGiftCardRemoveV2Mutation.graphql";
+import checkoutGiftCardsAppendMutation from "./graphql/checkoutGiftCardsAppendMutation.graphql";
+import checkoutLineItemsAddMutation from "./graphql/checkoutLineItemsAddMutation.graphql";
+import checkoutLineItemsRemoveMutation from "./graphql/checkoutLineItemsRemoveMutation.graphql";
+import checkoutLineItemsReplaceMutation from "./graphql/checkoutLineItemsReplaceMutation.graphql";
+import checkoutLineItemsUpdateMutation from "./graphql/checkoutLineItemsUpdateMutation.graphql";
+import checkoutNodeQuery from "./graphql/checkoutNodeQuery.graphql";
+import checkoutShippingLineUpdateMutation from "./graphql/checkoutShippingLineUpdateMutation.graphql";
+
+import checkoutShippingAddressUpdateV2Mutation from "./graphql/checkoutShippingAddressUpdateV2Mutation.graphql";
 
 /**
  * The JS Buy SDK checkout resource
  * @class
  */
 class CheckoutResource extends Resource {
-
   /**
    * Fetches a checkout by ID.
    *
@@ -36,16 +37,22 @@ class CheckoutResource extends Resource {
    */
   fetch(id) {
     return this.graphQLClient
-      .send(checkoutNodeQuery, {id})
-      .then(defaultResolver('node'))
+      .send(checkoutNodeQuery, { id })
+      .then(defaultResolver("node"))
       .then((checkout) => {
-        if (!checkout) { return null; }
+        if (!checkout) {
+          return null;
+        }
 
-        return this.graphQLClient.fetchAllPages(checkout.lineItems, {pageSize: 250}).then((lineItems) => {
-          checkout.attrs.lineItems = lineItems;
+        return this.graphQLClient
+          .fetchAllPages(checkout.lineItems, {
+            pageSize: 250,
+          })
+          .then((lineItems) => {
+            checkout.attrs.lineItems = lineItems;
 
-          return checkout;
-        });
+            return checkout;
+          });
       });
   }
 
@@ -74,8 +81,13 @@ class CheckoutResource extends Resource {
    */
   create(input = {}) {
     return this.graphQLClient
-      .send(checkoutCreateMutation, {input})
-      .then(handleCheckoutMutation('checkoutCreate', this.graphQLClient));
+      .send(checkoutCreateMutation, { input })
+      .then(
+        handleCheckoutMutation(
+          "checkoutCreate",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -98,8 +110,16 @@ class CheckoutResource extends Resource {
    */
   updateAttributes(checkoutId, input = {}) {
     return this.graphQLClient
-      .send(checkoutAttributesUpdateV2Mutation, {checkoutId, input})
-      .then(handleCheckoutMutation('checkoutAttributesUpdateV2', this.graphQLClient));
+      .send(checkoutAttributesUpdateV2Mutation, {
+        checkoutId,
+        input,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutAttributesUpdateV2",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -119,8 +139,16 @@ class CheckoutResource extends Resource {
    */
   updateEmail(checkoutId, email) {
     return this.graphQLClient
-      .send(checkoutEmailUpdateV2Mutation, {checkoutId, email})
-      .then(handleCheckoutMutation('checkoutEmailUpdateV2', this.graphQLClient));
+      .send(checkoutEmailUpdateV2Mutation, {
+        checkoutId,
+        email,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutEmailUpdateV2",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -140,8 +168,16 @@ class CheckoutResource extends Resource {
    */
   addLineItems(checkoutId, lineItems) {
     return this.graphQLClient
-      .send(checkoutLineItemsAddMutation, {checkoutId, lineItems})
-      .then(handleCheckoutMutation('checkoutLineItemsAdd', this.graphQLClient));
+      .send(checkoutLineItemsAddMutation, {
+        checkoutId,
+        lineItems,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutLineItemsAdd",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -161,8 +197,16 @@ class CheckoutResource extends Resource {
    */
   addDiscount(checkoutId, discountCode) {
     return this.graphQLClient
-      .send(checkoutDiscountCodeApplyV2Mutation, {checkoutId, discountCode})
-      .then(handleCheckoutMutation('checkoutDiscountCodeApplyV2', this.graphQLClient));
+      .send(checkoutDiscountCodeApplyV2Mutation, {
+        checkoutId,
+        discountCode,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutDiscountCodeApplyV2",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -180,8 +224,15 @@ class CheckoutResource extends Resource {
    */
   removeDiscount(checkoutId) {
     return this.graphQLClient
-      .send(checkoutDiscountCodeRemoveMutation, {checkoutId})
-      .then(handleCheckoutMutation('checkoutDiscountCodeRemove', this.graphQLClient));
+      .send(checkoutDiscountCodeRemoveMutation, {
+        checkoutId,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutDiscountCodeRemove",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -201,8 +252,16 @@ class CheckoutResource extends Resource {
    */
   addGiftCards(checkoutId, giftCardCodes) {
     return this.graphQLClient
-      .send(checkoutGiftCardsAppendMutation, {checkoutId, giftCardCodes})
-      .then(handleCheckoutMutation('checkoutGiftCardsAppend', this.graphQLClient));
+      .send(checkoutGiftCardsAppendMutation, {
+        checkoutId,
+        giftCardCodes,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutGiftCardsAppend",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -222,8 +281,16 @@ class CheckoutResource extends Resource {
    */
   removeGiftCard(checkoutId, appliedGiftCardId) {
     return this.graphQLClient
-      .send(checkoutGiftCardRemoveV2Mutation, {checkoutId, appliedGiftCardId})
-      .then(handleCheckoutMutation('checkoutGiftCardRemoveV2', this.graphQLClient));
+      .send(checkoutGiftCardRemoveV2Mutation, {
+        checkoutId,
+        appliedGiftCardId,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutGiftCardRemoveV2",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -243,8 +310,16 @@ class CheckoutResource extends Resource {
    */
   removeLineItems(checkoutId, lineItemIds) {
     return this.graphQLClient
-      .send(checkoutLineItemsRemoveMutation, {checkoutId, lineItemIds})
-      .then(handleCheckoutMutation('checkoutLineItemsRemove', this.graphQLClient));
+      .send(checkoutLineItemsRemoveMutation, {
+        checkoutId,
+        lineItemIds,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutLineItemsRemove",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -264,8 +339,16 @@ class CheckoutResource extends Resource {
    */
   replaceLineItems(checkoutId, lineItems) {
     return this.graphQLClient
-      .send(checkoutLineItemsReplaceMutation, {checkoutId, lineItems})
-      .then(handleCheckoutMutation('checkoutLineItemsReplace', this.graphQLClient));
+      .send(checkoutLineItemsReplaceMutation, {
+        checkoutId,
+        lineItems,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutLineItemsReplace",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -291,8 +374,16 @@ class CheckoutResource extends Resource {
    */
   updateLineItems(checkoutId, lineItems) {
     return this.graphQLClient
-      .send(checkoutLineItemsUpdateMutation, {checkoutId, lineItems})
-      .then(handleCheckoutMutation('checkoutLineItemsUpdate', this.graphQLClient));
+      .send(checkoutLineItemsUpdateMutation, {
+        checkoutId,
+        lineItems,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutLineItemsUpdate",
+          this.graphQLClient
+        )
+      );
   }
 
   /**
@@ -323,8 +414,36 @@ class CheckoutResource extends Resource {
    */
   updateShippingAddress(checkoutId, shippingAddress) {
     return this.graphQLClient
-      .send(checkoutShippingAddressUpdateV2Mutation, {checkoutId, shippingAddress})
-      .then(handleCheckoutMutation('checkoutShippingAddressUpdateV2', this.graphQLClient));
+      .send(checkoutShippingAddressUpdateV2Mutation, {
+        checkoutId,
+        shippingAddress,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutShippingAddressUpdateV2",
+          this.graphQLClient
+        )
+      );
+  }
+
+  /**
+   * Updates shipping lines on an existing checkout
+   * @param checkoutId
+   * @param shippingRateHandle
+   * @returns {*|PromiseLike<T | never>|Promise<T | never>}
+   */
+  updateShippingLines(checkoutId, shippingRateHandle) {
+    return this.graphQLClient
+      .send(checkoutShippingLineUpdateMutation, {
+        checkoutId,
+        shippingRateHandle,
+      })
+      .then(
+        handleCheckoutMutation(
+          "checkoutShippingLineUpdate",
+          this.graphQLClient
+        )
+      );
   }
 }
 

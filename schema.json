@@ -6204,6 +6204,12 @@
               "deprecationReason": null
             },
             {
+              "name": "DISCOUNT_CODE_APPLICATION_FAILED",
+              "description": "Discount code isn't working right now. Please contact us for help.",
+              "isDeprecated": false,
+              "deprecationReason": null
+            },
+            {
               "name": "EMPTY",
               "description": "Checkout is already completed.",
               "isDeprecated": false,
@@ -30111,10 +30117,7 @@
         {
           "name": "accessRestricted",
           "description": "Marks an element of a GraphQL schema as having restricted access.",
-          "locations": [
-            "FIELD_DEFINITION",
-            "OBJECT"
-          ],
+          "locations": ["FIELD_DEFINITION", "OBJECT"],
           "args": [
             {
               "name": "reason",
@@ -30131,10 +30134,7 @@
         {
           "name": "inContext",
           "description": "Contextualizes data based on the additional information provided by the directive. For example, you can use the `@inContext(country: CA)` directive to [query a product's price](https://shopify.dev/custom-storefronts/internationalization/international-pricing) in a storefront within the context of Canada.",
-          "locations": [
-            "QUERY",
-            "MUTATION"
-          ],
+          "locations": ["QUERY", "MUTATION"],
           "args": [
             {
               "name": "country",
